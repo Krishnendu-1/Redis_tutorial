@@ -33,6 +33,29 @@ async function connectRedis(){
     await new Promise((resolve,reject)=>setTimeout(resolve,1000))//it will wait 1s before unsubscribe and quit
     await subscriber.unsubscribe();
     await subscriber.quit();//discard the connection
+
+
+
+
+//* Pipelining & transactions */
+
+console.log('Without pipeline')
+console.time('no pipline used')
+for(let i=0;i<1000;i++) 
+    connectClient.set(`user-Key${i}:`,`user-val${i}`)
+console.timeEnd('no pipline used')
+
+console.log('With pipeline')
+console.time('pipline used')
+const pipe= connectClient.multi();
+for(let i=0;i<1000;i++) {
+    pipe.set(`user-pipeline-Key${i}`,`user-pipeline-val${i}`)//it will take all the commands and execute them in a single request, taking less time
+}
+await pipe.exec()
+console.timeEnd('pipline used')
+
+
+
     } catch (error) {
         connectClient.on('error',(err)=>{
             console.log('redis connection error',err);
