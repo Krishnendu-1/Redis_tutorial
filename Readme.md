@@ -86,5 +86,3 @@ In microservices or distributed systems, race conditions can be disastrous. Redi
 | Pub/Sub         | Real-time communication                 |
 | Locking         | Safe concurrency in distributed systems |
 | Queues          | Lightweight task/job queues             |
-
-Let me know if you want examples for any of the above use cases (like Node.js or Python integration).
